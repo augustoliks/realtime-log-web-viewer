@@ -2,32 +2,29 @@ import logging.handlers
 from time import sleep
 import logging
 import string
+from loguru import logger
 
-
-my_logger = logging.getLogger()
-my_logger.setLevel(logging.INFO)
 
 flag = True
 
 
 while flag:
     try:
-        handler = logging.handlers.SysLogHandler(address=('rsyslog', 10514))
-        my_logger.addHandler(handler)
+        logger.add(
+            logging.handlers.SysLogHandler(address=('rsyslog', 10514))
+        )
         flag = False
+        logger.error('conectado ao rsyslog')
     except:
         logging.error('erro ao conectar com o rsyslog')
         sleep(1)
 
-logging.error('conectado ao rsyslog')
-
 while True:
     for event in [f'log {k}' for k in string.ascii_uppercase]:        
         try:
-            logging.info(event)
-            print(event)
+            logger.info(event)
         except:
-            logging.error('erro ao conectar com o rsyslog')
+            logger.error('erro ao conectar com o rsyslog')
             pass
 
         sleep(1)

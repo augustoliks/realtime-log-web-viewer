@@ -59,13 +59,14 @@ async def get():
     return HTMLResponse(html)
 
 
-@app.websocket("/ws")
-async def proxy_stream(ws: WebSocket):
-    stream = 'fakelog'
+@app.websocket("/ws/{channel}")
+async def proxy_stream(ws: WebSocket, channel: str):
     await ws.accept()
 
+    channel_name = f'my_application_{channel}_realtime_log_web_viewer'
+
     redis = await aioredis.create_redis(REDIS_ADDRESS)
-    redis_subscriber = await redis.subscribe(CHANNEL)
+    redis_subscriber = await redis.subscribe(channel_name)
 
     while True:
         try:
@@ -74,13 +75,13 @@ async def proxy_stream(ws: WebSocket):
                     continue
                 try:
                     message_log_json = json.loads(message)
-                    logging.info(f"{ws}: message_log_json")
+                    logging.info(f"{ws}: {message_log_json}")
                     await ws.send_json(message_log_json)
                 except (ConnectionClosed, WebSocketDisconnect):
-                    logging.info(f"{ws}: disconnected from channel {stream}")
+                    logging.info(f"{ws}: disconnected from channel {channel_name}")
                     return
         except Exception as e:
-            logging.error(f"read timed out for stream {stream}, {e}")
+            logging.error(f"read timed out for stream {channel_name}, {e}")
             return
 
 

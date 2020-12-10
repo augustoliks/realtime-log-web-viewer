@@ -1,8 +1,14 @@
 version: "3.7"
 
 services:
-  fakelog:
-    container_name: fakelog
+  fakelog_a:
+    container_name: fakelog_a
+    build:
+      context: fakelog/
+      dockerfile: Dockerfile
+      
+  fakelog_b:
+    container_name: fakelog_b
     build:
       context: fakelog/
       dockerfile: Dockerfile
