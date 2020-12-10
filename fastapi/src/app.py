@@ -2,11 +2,12 @@ import json
 import logging
 import uvicorn
 import aioredis
+from jinja2 import Template
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from websockets.exceptions import ConnectionClosed
-from jinja2 import Template
 from starlette.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from starlette.websockets import (
     WebSocket,
     WebSocketDisconnect
@@ -54,14 +55,32 @@ html_template = Template("""
 """)
 
 
-@app.get("/{application}")
-async def get(application: str):
+@app.get("/web/ws/{application}")
+async def ws_view(application: str):
     html = html_template.render(port=WEB_PORT, application=application)
     return HTMLResponse(html)
 
 
+@app.get("/sse/{application}")
+async def sse(application: str):
+    async def stream(redis_subscriber):
+        async for message in redis_subscriber[0].iter():
+            if not message:
+                continue
+            message_log_json = json.dumps(json.loads(message)) + '\n'
+            logging.info(f"{ws}: {message_log_json}")
+            yield message_log_json.encode(encoding='utf-8')
+
+    channel_name = f'{application}.realtime-log-web-viewer_default'
+
+    redis = await aioredis.create_redis(REDIS_ADDRESS)
+    redis_subscriber = await redis.subscribe(channel_name)
+
+    return StreamingResponse(stream(redis_subscriber))
+
+
 @app.websocket("/ws/{application}")
-async def proxy_stream(ws: WebSocket, application: str):
+async def ws(ws: WebSocket, application: str):
     await ws.accept()
 
     # my_application_fakelog_a_realtime-log-web-viewer_default
