@@ -18,16 +18,16 @@ services:
     build:
       context: rsyslog/
       dockerfile: Dockerfile
-    ports:
-      - 9090:10514
+    # ports:
+    #   - 9090:10514
     
   redis:
     container_name: redis
     build:
       context: redis/
       dockerfile: Dockerfile
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
 
   fastapi:
     container_name: fastapi
