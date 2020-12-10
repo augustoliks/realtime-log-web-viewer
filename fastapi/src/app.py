@@ -5,6 +5,7 @@ import aioredis
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from websockets.exceptions import ConnectionClosed
+from jinja2 import Template
 from starlette.middleware.cors import CORSMiddleware
 from starlette.websockets import (
     WebSocket,
@@ -31,7 +32,7 @@ app.add_middleware(
 )
 
 
-html = """
+html_template = Template("""
 <!DOCTYPE html>
 <html>
     <head>
@@ -40,7 +41,7 @@ html = """
     <body>
         <ul id='messages'>
         <script>
-            var ws = new WebSocket('ws://0.0.0.0:8080/ws');
+            var ws = new WebSocket('ws://0.0.0.0:{{ port }}/ws/{{ application }}');
             ws.onmessage = function(event) {
                 var messages = document.getElementById('messages')
                 var message = document.createElement('li')
@@ -51,19 +52,21 @@ html = """
         </script>
     </body>
 </html>
-"""
+""")
 
 
-@app.get("/")
-async def get():
+@app.get("/{application}")
+async def get(application: str):
+    html = html_template.render(port=WEB_PORT, application=application)
     return HTMLResponse(html)
 
 
-@app.websocket("/ws/{channel}")
-async def proxy_stream(ws: WebSocket, channel: str):
+@app.websocket("/ws/{application}")
+async def proxy_stream(ws: WebSocket, application: str):
     await ws.accept()
 
-    channel_name = f'my_application_{channel}_realtime_log_web_viewer'
+    # my_application_fakelog_a_realtime-log-web-viewer_default
+    channel_name = f'{application}.realtime-log-web-viewer_default'
 
     redis = await aioredis.create_redis(REDIS_ADDRESS)
     redis_subscriber = await redis.subscribe(channel_name)
