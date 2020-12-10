@@ -16,7 +16,6 @@ from starlette.websockets import (
 logging.basicConfig(level=logging.INFO)
 
 
-CHANNEL = 'fakelog'
 WEB_PORT = 8080
 # REDIS_ADDRESS = 'redis://127.0.0.1:6379'
 REDIS_ADDRESS = 'redis://redis:6379'
