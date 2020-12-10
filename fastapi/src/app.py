@@ -1,16 +1,35 @@
-from fastapi import (
-    FastAPI,
-    WebSocket
-)
-import typing
-import uvicorn
-import redis
 import json
-import asyncio
-from redis.client import PubSub
+import logging
+import uvicorn
+import aioredis
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from websockets.exceptions import ConnectionClosed
+from starlette.middleware.cors import CORSMiddleware
+from starlette.websockets import (
+    WebSocket,
+    WebSocketDisconnect
+)
 
+
+logging.basicConfig(level=logging.INFO)
+
+
+CHANNEL = 'fakelog'
 WEB_PORT = 8080
+# REDIS_ADDRESS = 'redis://127.0.0.1:6379'
+REDIS_ADDRESS = 'redis://redis:6379'
+
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
 
 html = """
 <!DOCTYPE html>
@@ -35,55 +54,34 @@ html = """
 """
 
 
-# REDIS_ADDRESS = '127.0.0.1'
-REDIS_ADDRESS = 'redis'
-REDIS_PORT = 6379
-
-
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: typing.List[WebSocket] = []
-
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-        print(f'CONECTADO: {len(self.active_connections)}')
-
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-        print(f'DESCONECTADO: {len(self.active_connections)}')
-
-    async def send_message(self, message: dict, websocket: WebSocket):
-        await websocket.send_json(message)
-
-
-redis_client = redis.Redis(host=REDIS_ADDRESS, port=REDIS_PORT, db=0)
-redis_pb = redis_client.pubsub()
-redis_pb.subscribe('fakelog')
-
-app = FastAPI()
-manager = ConnectionManager()
-
-
-@app.websocket("/ws")
-async def ws_logs(websocket: WebSocket):
-    await manager.connect(websocket)
-
-    try:
-        for raw_msg in redis_pb.listen():
-            if raw_msg['type'] != 'message':
-                continue
-            log = json.loads(raw_msg['data'].decode('utf-8'))
-            print(log)
-            await manager.send_message(log, websocket)
-            await asyncio.sleep(0)
-    except:
-        manager.disconnect(websocket)
-
-
 @app.get("/")
 async def get():
     return HTMLResponse(html)
+
+
+@app.websocket("/ws")
+async def proxy_stream(ws: WebSocket):
+    stream = 'fakelog'
+    await ws.accept()
+
+    redis = await aioredis.create_redis(REDIS_ADDRESS)
+    redis_subscriber = await redis.subscribe(CHANNEL)
+
+    while True:
+        try:
+            async for message in redis_subscriber[0].iter():
+                if not message:
+                    continue
+                try:
+                    message_log_json = json.loads(message)
+                    logging.info(f"{ws}: message_log_json")
+                    await ws.send_json(message_log_json)
+                except (ConnectionClosed, WebSocketDisconnect):
+                    logging.info(f"{ws}: disconnected from channel {stream}")
+                    return
+        except Exception as e:
+            logging.error(f"read timed out for stream {stream}, {e}")
+            return
 
 
 def main():
