@@ -107,7 +107,60 @@ Segue a configuração que implementa esta etapa.
 FastAPI - Provedor dos logs em Tempo Real
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Desenvolvido com a linguagem Python com o Framework Web FastAPI, este Backend tem a função de se conectar com o Redis e reencaminhar os logs para o Frontend por meio dos protocolos Websocket e SSE (Server Sent Event). De acordo com a rota em que os clientes fazem requisições, o backend se inscreve em um canal do Redis, do qual é retransmitido os os *logs*.
 
+O trecho de código abaixo, expõe a retransmissão de logs por meio de uma conexão SSE. 
+
+.. code-block:: python
+
+    @app.get("/sse/{application}")
+    async def sse(application: str):
+        async def stream(redis_subscriber):
+            async for message in redis_subscriber[0].iter():
+                if not message:
+                    continue
+                message_log_json = json.dumps(json.loads(message)) + '\n'
+                logging.info(f"{ws}: {message_log_json}")
+                yield message_log_json.encode(encoding='utf-8')
+
+        channel_name = f'{application}.realtime-log-web-viewer_default'
+
+        redis = await aioredis.create_redis(REDIS_ADDRESS)
+        redis_subscriber = await redis.subscribe(channel_name)
+
+        return StreamingResponse(stream(redis_subscriber))
+
+O canal Redis em que o Backend se inscreverá, é declarado no valor passado no lugar de ``{application}`` na rota ``/sse/{application}``.
+
+As comunicações Websocket seguem a mesma ideia da SSE. Segue o código.
+
+.. code-block:: python
+
+    @app.websocket("/ws/{application}")
+    async def ws(ws: WebSocket, application: str):
+        await ws.accept()
+
+        # my_application_fakelog_a_realtime-log-web-viewer_default
+        channel_name = f'{application}.realtime-log-web-viewer_default'
+
+        redis = await aioredis.create_redis(REDIS_ADDRESS)
+        redis_subscriber = await redis.subscribe(channel_name)
+
+        while True:
+            try:
+                async for message in redis_subscriber[0].iter():
+                    if not message:
+                        continue
+                    try:
+                        message_log_json = json.loads(message)
+                        logging.info(f"{ws}: {message_log_json}")
+                        await ws.send_json(message_log_json)
+                    except (ConnectionClosed, WebSocketDisconnect):
+                        logging.info(f"{ws}: disconnected from channel {channel_name}")
+                        return
+            except Exception as e:
+                logging.error(f"read timed out for stream {channel_name}, {e}")
+                return
 
 Soluções Existentes
 ===================
