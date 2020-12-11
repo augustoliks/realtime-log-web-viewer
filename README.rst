@@ -13,14 +13,15 @@ Tecnologias Utilizadas
 +--------------------+----------------------+
 | Nome               | Versão               |
 +====================+======================+
-| rsyslog            |                      |
-+--------------------+----------------------+
-| redis-omhiredis    |                      |
+| rsyslog-hiredis    | 8.36.0               |
 +--------------------+----------------------+
 | redis              |                      |
 +--------------------+----------------------+
+| rsyslog            | 8.33.1               |
++--------------------+----------------------+
 | python             | >= 3.7               |
 +--------------------+----------------------+
+
 
 Arquitetura da Solução
 ----------------------
@@ -103,14 +104,15 @@ Segue a configuração que implementa esta etapa.
         dynakey="on"
     )
 
+Soluções Existentes
+===================
+
+- log.io
+- Graylog
+
 Refêrencias
 ===========
 
 - https://www.rsyslog.com/doc/v8-stable/configuration/modules/omhiredis.html
 - https://github.com/elementary-robotics/redisconf-2020-streams-fastapi
 
-Soluções Existentes
-===================
-
-- log.io
-- Graylog
