@@ -25,7 +25,7 @@ Arquitetura da Solução
 
 .. image:: docs/drawio-realtime-log-web-viewer.png
 
-As aplicações ``fakelog_a`` e ``fakelog_b``, dão origem aos logs. Os logs são reencaminhados para o Rsyslog via TCP. O trecho do código responsável conectar a aplicação com o Rsyslog. 
+As aplicações ``fakelog_a`` e ``fakelog_b``, dão origem aos logs. Os logs são reencaminhados para o Rsyslog via TCP. O trecho do código responsável por conectar a aplicação com o Rsyslog. 
 
 .. code-block:: python
 
@@ -39,7 +39,7 @@ As aplicações ``fakelog_a`` e ``fakelog_b``, dão origem aos logs. Os logs sã
 
 ::
 
-    Foi utilizado a biblioteca ``loguru`` por conta da simplicidade que ela oferece, porém sua presença não é obrigatória.
+    Foi utilizado a biblioteca loguru por conta da simplicidade que ela oferece. Porém sua presença não é obrigatória, e pode ser substituída pela biblioteca logging.
 
 O Rsyslog foi configurado para satisfazer as seguintes três etapas: Entrada, Filtro/Transformação e Saída. 
 
