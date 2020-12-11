@@ -49,7 +49,9 @@ Rsyslog
 
 O Rsyslog foi configurado para satisfazer as seguintes três etapas: **Entrada**, **Filtro/Transformação** e **Saída**. 
 
-Na etapa de **Entrada**, o Rsyslog foi configurado para receber os *log's* via protocolo TCP pela porta 10514. Segue o trecho que habilita esta funcionalidade.
+Na etapa de **Entrada**, o Rsyslog foi configurado para receber os *log's* via protocolo TCP pela porta 10514. 
+
+Segue o trecho que habilita esta funcionalidade.
 
 :: 
 
@@ -57,7 +59,9 @@ Na etapa de **Entrada**, o Rsyslog foi configurado para receber os *log's* via p
     $ModLoad imtcp
     $InputTCPServerRun 10514
 
-Já na etapa de **Filtro/Transformação**, os *log's* sofrem uma mudança na sua estrutura, de protocolo ``syslog`` para o protocolo ``gelf``.  Segue o trecho responsável por executar a transformação.
+Já na etapa de **Filtro/Transformação**, os *log's* sofrem uma mudança na sua estrutura, de protocolo ``syslog`` para o protocolo ``gelf``.  
+
+Segue o trecho responsável por executar a transformação.
 
 ::
 
@@ -69,7 +73,9 @@ Já na etapa de **Filtro/Transformação**, os *log's* sofrem uma mudança na su
         constant(value=",\"_group\":\"lr\"}\n")
     }
 
-Por fim, na etapa de **Saída**, os logs transformados na etapa anterior, são enviados para uma instância do Redis. O envio é feito utilizando o modelo de comunicação Publish/Subscribe. Assim, é correto afirmar que os logs são publicados em um canal do Redis. O nome do canal em que será publicado o log, é definido pelo nome da aplicação que lhe-deu origem, ou seja, a aplicação **fakelog_a**, terá seus logs publicados no canal **fakelog_a**, e os logs da aplicação **fakelog_b**, serão os seus logs publicados no canal **fakelog_b**. Segue a configuração que implementa esta etapa.
+Por fim, na etapa de **Saída**, os logs transformados na etapa anterior, são enviados para uma instância do Redis. O envio é feito utilizando o modelo de comunicação Publish/Subscribe. Assim, é correto afirmar que os logs são publicados em um canal do Redis. O nome do canal em que será publicado o log, é definido pelo nome da aplicação que lhe-deu origem, ou seja, a aplicação **fakelog_a**, terá seus logs publicados no canal **fakelog_a**, e os logs da aplicação **fakelog_b**, serão os seus logs publicados no canal **fakelog_b**. 
+
+Segue a configuração que implementa esta etapa.
 
 ::
 
