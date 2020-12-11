@@ -28,7 +28,7 @@ Arquitetura da Solução
 
 .. image:: docs/drawio-realtime-log-web-viewer.png
 
-As próximas subseções, irão explicar cada módulo exposto no diagrama, com exceção do Redis, em que a configuração padrão, já satisfaz as necessidades do projeto.
+As próximas subseções, irão explicar cada módulo exposto no diagrama, com exceção do Redis, em que sua configuração padrão, já satisfaz as necessidades do projeto.
 
 Aplicações (fakelog_a, fakelog_b)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
