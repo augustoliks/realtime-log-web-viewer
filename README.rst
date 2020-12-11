@@ -5,7 +5,17 @@ realtime-log-web-viewer
 
 * **Autor**: @augustoliks | carlos.neto.dev@gmail.com
 
+* **Descrição**: PoC de integração de tecnologias para possibilitar a visualização de logs em um ambiente de Web por meio dos protocolos WebSocket e SSE. As tecnologias foram escolhidas para que se seja possível ter uma arquitetura extensível e consiste, e ao mesmo tempo, que não requerem consumo de recursos *server-side*. 
+
 * **Objetivo**: Exibir log de aplicações em tempo real em um ambiente Web.
+
+Soluções Semelhantes
+--------------------
+
+- `log.io <https://github.com/NarrativeScience/log.io>`_: Solução simples e objetiva para visualizar logs de arquivos via ambiente Web;
+- `Graylog <https://www.graylog.org/>`_: Solução robusta para visualização de logs de multiplas fontes.
+
+A presente PoC, se enqudra no meio termo entre as duas soluções citadas. 
 
 Tecnologias Utilizadas
 ----------------------
@@ -161,12 +171,6 @@ As comunicações Websocket seguem a mesma ideia da SSE. Segue o código.
             except Exception as e:
                 logging.error(f"read timed out for stream {channel_name}, {e}")
                 return
-
-Soluções Existentes
-===================
-
-- log.io
-- Graylog
 
 Referências
 ===========
