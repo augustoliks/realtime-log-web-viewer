@@ -104,8 +104,8 @@ Segue a configuração que implementa esta etapa.
         dynakey="on"
     )
 
-FastAPI - Provedor dos logs em Tempo Real
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FastAPI - Web-Backend Provedor dos Logs em Tempo Real
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Desenvolvido com a linguagem Python com o Framework Web FastAPI, este Backend tem a função de se conectar com o Redis e reencaminhar os logs para o Frontend por meio dos protocolos Websocket e SSE (Server Sent Event). De acordo com a rota em que os clientes fazem requisições, o backend se inscreve em um canal do Redis, do qual é retransmitido os os *logs*.
 
