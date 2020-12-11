@@ -47,7 +47,7 @@ As aplicações ``fakelog_a`` e ``fakelog_b``, dão origem aos logs. Os logs sã
 Rsyslog
 ^^^^^^^
 
-O Rsyslog foi configurado para satisfazer as seguintes três etapas: Entrada, Filtro/Transformação e Saída. 
+O Rsyslog foi configurado para satisfazer as seguintes três etapas: **Entrada**, **Filtro/Transformação** e **Saída**. 
 
 Na etapa de **Entrada**, o Rsyslog foi configurado para receber os *log's* via protocolo TCP pela porta 10514. Segue o trecho que habilita esta funcionalidade.
 
