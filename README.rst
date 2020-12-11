@@ -1,7 +1,7 @@
 realtime-log-web-viewer
 #######################
 
-* **Date**: 10/12/2020
+* **Data**: 10/12/2020
 
 * **Autor**: @augustoliks | carlos.neto.dev@gmail.com
 
