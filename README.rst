@@ -49,8 +49,8 @@ As aplicações ``fakelog_a`` e ``fakelog_b``, dão origem aos logs. Os logs sã
 
     Foi utilizado a biblioteca loguru por conta da simplicidade que ela oferece. Porém sua presença não é obrigatória, e pode ser substituída pela biblioteca logging.
 
-Rsyslog
-^^^^^^^
+Rsyslog - Receptor, Transformador e Publicador
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 O Rsyslog foi configurado para satisfazer as seguintes três etapas: **Entrada**, **Filtro/Transformação** e **Saída**. 
 
@@ -104,13 +104,18 @@ Segue a configuração que implementa esta etapa.
         dynakey="on"
     )
 
+FastAPI - Provedor dos logs em Tempo Real
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
 Soluções Existentes
 ===================
 
 - log.io
 - Graylog
 
-Refêrencias
+Referências
 ===========
 
 - https://www.rsyslog.com/doc/v8-stable/configuration/modules/omhiredis.html
