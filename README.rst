@@ -30,8 +30,8 @@ Arquitetura da Solução
 
 As próximas subseções, irão explicar cada módulo exposto no diagrama, com exceção do Redis, em que sua configuração padrão, já satisfaz as necessidades do projeto.
 
-Fakelogs (``fakelog_a``, ``fakelog_b``) - Aplicações 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Fakelogs ``fakelog_a`` e ``fakelog_b`` - Aplicações 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As aplicações ``fakelog_a`` e ``fakelog_b``, dão origem aos logs. Os logs são reencaminhados para o Rsyslog via TCP. O trecho do código responsável por conectar a aplicação com o Rsyslog. 
 
