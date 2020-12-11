@@ -107,7 +107,7 @@ Segue a configuração que implementa esta etapa.
 FastAPI - Web-Backend Provedor dos Logs em Tempo Real
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Desenvolvido com a linguagem Python com o Framework Web FastAPI, este Backend tem a função de se conectar com o Redis e reencaminhar os logs para o Frontend por meio dos protocolos Websocket e SSE (Server Sent Event). De acordo com a rota em que os clientes fazem as requisições HTTP e conexões WS, o backend se inscreve em um canal do Redis, do qual é retransmitido os os *logs*.
+Desenvolvido com a linguagem Python com o Framework Web FastAPI, este Backend tem a função de se conectar com o Redis e reencaminhar os logs para o Frontend por meio dos protocolos Websocket e SSE (Server Sent Event). De acordo com a rota em que os clientes fazem as requisições HTTP e conexões WS, o backend se inscreve em um canal específico do Redis, do qual é retransmitido os os *logs*.
 
 O trecho de código abaixo, expõe a retransmissão de logs por meio de uma conexão SSE. 
 
