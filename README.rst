@@ -13,17 +13,21 @@ Tecnologias Utilizadas
 +--------------------+----------------------+
 | Nome               | Versão               |
 +====================+======================+
-| Rsyslog            |                      |
+| rsyslog            |                      |
 +--------------------+----------------------+
-| Redis              |                      |
+| redis-omhiredis    |                      |
 +--------------------+----------------------+
-| FastAPI            |                      |
+| redis              |                      |
++--------------------+----------------------+
+| python             | >= 3.7               |
 +--------------------+----------------------+
 
 Arquitetura da Solução
 ----------------------
 
 .. image:: docs/drawio-realtime-log-web-viewer.png
+
+As próximas subseções, irão explicar cada módulo exposto no diagrama, com exceção do Redis, em que a configuração padrão, já satisfaz as necessidades do projeto.
 
 Aplicações (fakelog_a, fakelog_b)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -98,3 +102,15 @@ Segue a configuração que implementa esta etapa.
         key="channel_app"
         dynakey="on"
     )
+
+Refêrencias
+===========
+
+- https://www.rsyslog.com/doc/v8-stable/configuration/modules/omhiredis.html
+- https://github.com/elementary-robotics/redisconf-2020-streams-fastapi
+
+Soluções Existentes
+===================
+
+- log.io
+- Graylog
