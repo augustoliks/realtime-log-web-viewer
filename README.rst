@@ -72,6 +72,7 @@ Já na etapa de Filtro/Transformação, os *log's* sofrem uma mudança na sua es
 Por fim, na etapa de Saída, os logs transformados na etapa anterior, são enviados para uma instância do Redis. O envio é feito utilizando o modelo de comunicação Publish/Subscribe. Assim, é correto afirmar que os logs são publicados em um canal do Redis. O nome do canal que será publicado o log, é definido pelo nome da aplicação que lhe-deu origem. Segue a configuração que implementa esta etapa:
 
 ::
+
     module(load="omhiredis")
     action(
         name="publish_redis"
