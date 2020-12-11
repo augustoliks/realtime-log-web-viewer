@@ -69,9 +69,17 @@ Já na etapa de **Filtro/Transformação**, os *log's* sofrem uma mudança na su
         constant(value=",\"_group\":\"lr\"}\n")
     }
 
-Por fim, na etapa de **Saída**, os logs transformados na etapa anterior, são enviados para uma instância do Redis. O envio é feito utilizando o modelo de comunicação Publish/Subscribe. Assim, é correto afirmar que os logs são publicados em um canal do Redis. O nome do canal que será publicado o log, é definido pelo nome da aplicação que lhe-deu origem. Segue a configuração que implementa esta etapa.
+Por fim, na etapa de **Saída**, os logs transformados na etapa anterior, são enviados para uma instância do Redis. O envio é feito utilizando o modelo de comunicação Publish/Subscribe. Assim, é correto afirmar que os logs são publicados em um canal do Redis. O nome do canal em que será publicado o log, é definido pelo nome da aplicação que lhe-deu origem, ou seja, a aplicação **fakelog_a**, terá seus logs publicados no canal **fakelog_a**, e os logs da aplicação **fakelog_b**, serão os seus logs publicados no canal **fakelog_b**. Segue a configuração que implementa esta etapa.
 
 ::
+
+    template(name="gelf_containers" type="list") {
+        constant(value="{\"_app_name\":\"")         property(name="fromhost")
+        constant(value="\",\"host\":\"")            property(name="$myhostname")
+        constant(value="\",\"short_message\":\"")   property(name="msg" format="json")
+        constant(value="\",\"timestamp\":")         property(name="timegenerated" dateformat="unixtimestamp")
+        constant(value=",\"_group\":\"lr\"}\n")
+    }
 
     module(load="omhiredis")
     action(
