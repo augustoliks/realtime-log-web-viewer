@@ -5,7 +5,7 @@ realtime-log-web-viewer
 
 * **Autor**: @augustoliks | carlos.neto.dev@gmail.com
 
-* **Descrição**: PoC de integração de tecnologias para possibilitar a visualização de logs em um ambiente de Web por meio dos protocolos WebSocket e SSE. As tecnologias foram escolhidas para que se seja possível ter uma arquitetura extensível e consiste, e ao mesmo tempo, que não requerem consumo de recursos *server-side*. 
+* **Descrição**: PoC de integração de tecnologias para possibilitar a visualização de logs em um ambiente de Web por meio dos protocolos WebSocket e SSE. Tecnologias escolhidas com foco em: simplicidade, consistência e extensibilidade. 
 
 * **Objetivo**: Exibir log de aplicações em tempo real em um ambiente Web.
 
