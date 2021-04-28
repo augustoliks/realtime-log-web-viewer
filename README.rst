@@ -177,4 +177,4 @@ Referências
 
 - https://www.rsyslog.com/doc/v8-stable/configuration/modules/omhiredis.html
 - https://github.com/elementary-robotics/redisconf-2020-streams-fastapi
-
+- https://amittallapragada.github.io/docker/fastapi/python/2020/12/23/server-side-events.html
